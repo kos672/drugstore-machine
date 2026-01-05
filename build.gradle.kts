@@ -21,7 +21,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin") // Jackson extensions for Kotlin for working with JSON
     implementation("org.jetbrains.kotlin:kotlin-reflect") // Kotlin reflection library, required for working with Spring
 
-    testImplementation("org.spockframework:spock-core:2.4-groovy-5.0")
+    testImplementation("org.spockframework:spock-core:2.4-groovy-4.0")
 }
 
 tasks.test {
