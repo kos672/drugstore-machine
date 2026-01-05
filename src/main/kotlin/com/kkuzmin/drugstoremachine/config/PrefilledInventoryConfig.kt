@@ -4,15 +4,15 @@ import com.kkuzmin.drugstoremachine.domain.product.Money
 import com.kkuzmin.drugstoremachine.domain.product.Product
 import com.kkuzmin.drugstoremachine.domain.product.ProductGroup
 import com.kkuzmin.drugstoremachine.domain.product.ProductId
-import jakarta.annotation.PostConstruct
-import org.springframework.stereotype.Component
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import java.math.BigDecimal
 
-@Component
+@Configuration
 class PrefilledInventoryConfig {
 
-    @PostConstruct
-    fun init(): Map<Int, Product> =
+    @Bean
+    fun productCatalog(): Map<Int, Product> =
         mapOf(
             Pair(1, Product(ProductId(1), "Balea shower gel", ProductGroup.PERSONAL_HYGIENE, Money(BigDecimal("0.55")))),
             Pair(2, Product(ProductId(2), "SEINZ beard oil", ProductGroup.FACE, Money(BigDecimal("7.95")))),
