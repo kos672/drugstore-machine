@@ -13,4 +13,5 @@ class InMemoryPurchaseRepository : PurchaseRepository {
         purchases.add(purchase)
     }
 
+    override fun load() = purchases
 }

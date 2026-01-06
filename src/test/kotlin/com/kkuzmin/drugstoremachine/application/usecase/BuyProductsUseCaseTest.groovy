@@ -1,7 +1,7 @@
 package com.kkuzmin.drugstoremachine.application.usecase
 
-import com.kkuzmin.drugstoremachine.application.dto.PurchaseRequestDto
-import com.kkuzmin.drugstoremachine.application.dto.PurchaseResponseDto
+import com.kkuzmin.drugstoremachine.application.dto.purchase.PurchaseRequestDto
+import com.kkuzmin.drugstoremachine.application.dto.purchase.PurchaseResponseDto
 import com.kkuzmin.drugstoremachine.application.port.InventoryRepository
 import com.kkuzmin.drugstoremachine.application.port.PurchaseRepository
 import com.kkuzmin.drugstoremachine.application.util.UuidProvider

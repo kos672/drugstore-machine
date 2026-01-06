@@ -1,6 +1,6 @@
 package com.kkuzmin.drugstoremachine.interfaces.rest
 
-import com.kkuzmin.drugstoremachine.application.dto.FillInventoryRequest
+import com.kkuzmin.drugstoremachine.application.dto.inventory.FillInventoryRequest
 import com.kkuzmin.drugstoremachine.application.usecase.FillInventoryUseCase
 import com.kkuzmin.drugstoremachine.application.usecase.GetInventoryUseCase
 import org.springframework.http.HttpStatus

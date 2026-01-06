@@ -1,6 +1,6 @@
 package com.kkuzmin.drugstoremachine.application.usecase
 
-import com.kkuzmin.drugstoremachine.application.dto.FillInventoryRequest
+import com.kkuzmin.drugstoremachine.application.dto.inventory.FillInventoryRequest
 import com.kkuzmin.drugstoremachine.application.port.InventoryRepository
 import com.kkuzmin.drugstoremachine.domain.inventory.Inventory
 import com.kkuzmin.drugstoremachine.domain.inventory.ProductQuantity

@@ -15,7 +15,7 @@ class Inventory(
 
     fun take(productId: ProductId, quantity: ProductQuantity) {
         val item: InventoryItem? = availableItems[productId]
-        item?.decrease(quantity) ?: throw ProductNotFoundException("Product with the id ${productId.value} is not found")
+        item?.decrease(quantity) ?: throw ProductNotFoundException(productId)
     }
 
     fun currentState(): Map<ProductId, ProductQuantity> = availableItems.mapValues { it.value.quantity() }

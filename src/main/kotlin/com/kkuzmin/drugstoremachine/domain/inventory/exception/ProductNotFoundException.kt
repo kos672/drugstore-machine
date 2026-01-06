@@ -1,4 +1,6 @@
 package com.kkuzmin.drugstoremachine.domain.inventory.exception
 
-class ProductNotFoundException(message: String) : RuntimeException(message) {
+import com.kkuzmin.drugstoremachine.domain.product.ProductId
+
+class ProductNotFoundException(productId: ProductId) : RuntimeException("Product with the id ${productId.value} is not found") {
 }
