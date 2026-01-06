@@ -18,10 +18,10 @@ class InventoryController(
     private val getInventoryUseCase: GetInventoryUseCase
 ) {
 
-    @PostMapping("/inventory")
+    @PostMapping("/inventories")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun fillInventory(@RequestBody request: FillInventoryRequest) = fillInventoryUseCase.execute(request)
 
-    @GetMapping("/inventory")
+    @GetMapping("/inventories")
     fun getInventory() = getInventoryUseCase.execute()
 }

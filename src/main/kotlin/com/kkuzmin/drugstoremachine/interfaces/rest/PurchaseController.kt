@@ -16,10 +16,10 @@ class PurchaseController(
     val getPurchaseUseCase: GetPurchaseUseCase
 ) {
 
-    @PostMapping("/purchase")
+    @PostMapping("/purchases")
     fun buy(@RequestBody request: PurchaseRequestDto) = buyProductsUseCase.execute(request)
 
-    @GetMapping("purchase")
+    @GetMapping("purchases")
     fun getPurchases() = getPurchaseUseCase.execute()
 
 }
