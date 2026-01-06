@@ -4,6 +4,7 @@ import com.kkuzmin.drugstoremachine.application.dto.PurchaseRequestDto
 import com.kkuzmin.drugstoremachine.application.dto.PurchaseResponseDto
 import com.kkuzmin.drugstoremachine.application.port.InventoryRepository
 import com.kkuzmin.drugstoremachine.application.port.PurchaseRepository
+import com.kkuzmin.drugstoremachine.application.util.UuidProvider
 import com.kkuzmin.drugstoremachine.domain.inventory.Inventory
 import com.kkuzmin.drugstoremachine.domain.inventory.ProductQuantity
 import com.kkuzmin.drugstoremachine.domain.inventory.exception.InsufficientProductAmountAvailableException
@@ -19,6 +20,8 @@ class BuyProductsUseCaseSpec extends Specification {
     InventoryRepository inventoryRepository = Mock()
     PurchaseRepository purchaseRepository = Mock()
     Map<Integer, Product> productCatalog
+    UuidProvider uuidProvider = Mock()
+
     BuyProductsUseCase useCase
 
     def setup() {
@@ -26,7 +29,7 @@ class BuyProductsUseCaseSpec extends Specification {
                 1: new Product(new ProductId(1), "Balea shower gel", ProductGroup.PERSONAL_HYGIENE, new Money(new BigDecimal("0.55"))),
                 2: new Product(new ProductId(2), "SEINZ beard oil", ProductGroup.FACE, new Money(new BigDecimal("7.95"))),
         ]
-        useCase = new BuyProductsUseCase(inventoryRepository, purchaseRepository, productCatalog)
+        useCase = new BuyProductsUseCase(inventoryRepository, purchaseRepository, productCatalog, uuidProvider)
     }
 
     def "should buy products successfully and calculate total"() {
@@ -35,6 +38,10 @@ class BuyProductsUseCaseSpec extends Specification {
         inventory.fill(new ProductId(1), new ProductQuantity(10))
         inventory.fill(new ProductId(2), new ProductQuantity(2))
         inventoryRepository.load() >> inventory
+
+        def uuidString = "d2e2db22-64ae-4bf4-b399-aa7317e8edee"
+        def purchaseId = UUID.fromString(uuidString)
+        uuidProvider.generateUuid() >> purchaseId
 
         def items = [
                 1: 3,
@@ -55,7 +62,8 @@ class BuyProductsUseCaseSpec extends Specification {
         1 * inventoryRepository.save(_)
 
         and: "total amount is calculated"
-        response.total == "Total for your purchase is 9.60 €."
+
+        response.total == "Your order with ID $uuidString was successfully created, its total is 9.60 €."
     }
 
     def "should throw InsufficientProductAmountAvailableException when trying to buy more products than available"() {

@@ -3,8 +3,10 @@ package com.kkuzmin.drugstoremachine.domain.purchase
 import com.kkuzmin.drugstoremachine.domain.product.Money
 import com.kkuzmin.drugstoremachine.domain.product.Product
 import com.kkuzmin.drugstoremachine.domain.product.ProductId
+import java.util.UUID
 
 class Purchase private constructor(
+    val id: PurchaseId,
     val items: List<PurchaseItem>,
     val total: Money
 ) {
@@ -14,6 +16,7 @@ class Purchase private constructor(
     companion object {
 
         fun of(
+            uuid: UUID,
             items: List<PurchaseItem>,
             productCatalog: Map<ProductId, Product>
         ): Purchase {
@@ -22,7 +25,7 @@ class Purchase private constructor(
                 acc + Money(product.price.amount.multiply(prod.amount.toBigDecimal()))
             }
 
-            return Purchase(items, total)
+            return Purchase(PurchaseId(uuid), items, total)
         }
     }
 }
