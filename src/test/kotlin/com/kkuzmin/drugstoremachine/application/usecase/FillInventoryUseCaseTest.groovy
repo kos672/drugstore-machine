@@ -4,16 +4,25 @@ import com.kkuzmin.drugstoremachine.application.dto.inventory.FillInventoryReque
 import com.kkuzmin.drugstoremachine.application.port.InventoryRepository
 import com.kkuzmin.drugstoremachine.domain.inventory.Inventory
 import com.kkuzmin.drugstoremachine.domain.inventory.ProductQuantity
+import com.kkuzmin.drugstoremachine.domain.inventory.exception.ProductNotFoundException
+import com.kkuzmin.drugstoremachine.domain.product.Money
+import com.kkuzmin.drugstoremachine.domain.product.Product
+import com.kkuzmin.drugstoremachine.domain.product.ProductGroup
 import com.kkuzmin.drugstoremachine.domain.product.ProductId
 import spock.lang.Specification
 
 class FillInventoryUseCaseTest extends Specification {
 
     InventoryRepository inventoryRepository = Mock()
+    Map<Integer, Product> productCatalog
     FillInventoryUseCase useCase
 
     def setup() {
-        useCase = new FillInventoryUseCase(inventoryRepository)
+        productCatalog = [
+                1: new Product(new ProductId(1), "Balea shower gel", ProductGroup.PERSONAL_HYGIENE, new Money(new BigDecimal("0.55"))),
+                2: new Product(new ProductId(2), "SEINZ beard oil", ProductGroup.FACE, new Money(new BigDecimal("7.95"))),
+        ]
+        useCase = new FillInventoryUseCase(inventoryRepository, productCatalog)
     }
 
     def "should add quantity for existing product in inventory"() {
@@ -49,6 +58,20 @@ class FillInventoryUseCaseTest extends Specification {
 
         and: "inventory is saved"
         1 * inventoryRepository.save(inventory)
+    }
+
+    def "should not create an inventory item for unknown product"() {
+        given: "an inventory with productId 2"
+        def inventory = new Inventory()
+        def productId = 9999
+
+        inventoryRepository.load() >> inventory
+
+        when: "inventory is filled with the product with amount 4"
+        useCase.execute(new FillInventoryRequest(productId, 4))
+
+        then: "an exception is thrown"
+        thrown(ProductNotFoundException)
     }
 
     def "should not allow negative quantity"() {
