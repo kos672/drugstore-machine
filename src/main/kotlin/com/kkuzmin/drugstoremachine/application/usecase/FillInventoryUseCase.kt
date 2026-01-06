@@ -15,8 +15,8 @@ class FillInventoryUseCase(private val inventoryRepository: InventoryRepository,
 
     fun execute(request: FillInventoryRequest) {
         productCatalog[request.productId] ?: throw ProductNotFoundException(ProductId(request.productId))
-        val inventory = inventoryRepository.load()
-        inventory.fill(ProductId(request.productId), ProductQuantity(request.quantity))
-        inventoryRepository.save(inventory)
+        inventoryRepository.update { inventory ->
+            inventory.fill(ProductId(request.productId), ProductQuantity(request.quantity))
+        }
     }
 }

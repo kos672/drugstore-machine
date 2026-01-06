@@ -13,11 +13,12 @@ import com.kkuzmin.drugstoremachine.domain.product.Money
 import com.kkuzmin.drugstoremachine.domain.product.Product
 import com.kkuzmin.drugstoremachine.domain.product.ProductGroup
 import com.kkuzmin.drugstoremachine.domain.product.ProductId
+import com.kkuzmin.drugstoremachine.infrastructure.repository.InMemoryInventoryRepository
 import spock.lang.Specification
 
-class BuyProductsUseCaseSpec extends Specification {
+class BuyProductsUseCaseTest extends Specification {
 
-    InventoryRepository inventoryRepository = Mock()
+    InventoryRepository inventoryRepository = Spy(InMemoryInventoryRepository)
     PurchaseRepository purchaseRepository = Mock()
     Map<Integer, Product> productCatalog
     UuidProvider uuidProvider = Mock()
@@ -34,10 +35,9 @@ class BuyProductsUseCaseSpec extends Specification {
 
     def "should buy products successfully and calculate total"() {
         given: "an inventory with stock"
-        def inventory = new Inventory()
+        def inventory = inventoryRepository.load()
         inventory.fill(new ProductId(1), new ProductQuantity(10))
         inventory.fill(new ProductId(2), new ProductQuantity(2))
-        inventoryRepository.load() >> inventory
 
         def uuidString = "d2e2db22-64ae-4bf4-b399-aa7317e8edee"
         def purchaseId = UUID.fromString(uuidString)
@@ -58,19 +58,14 @@ class BuyProductsUseCaseSpec extends Specification {
         and: "purchase is saved"
         1 * purchaseRepository.save(_)
 
-        and: "inventory is saved"
-        1 * inventoryRepository.save(_)
-
         and: "total amount is calculated"
-
         response.total == "Your order with ID $uuidString was successfully created, its total is 9.60 €."
     }
 
     def "should throw InsufficientProductAmountAvailableException when trying to buy more products than available"() {
         given:
-        def inventory = new Inventory()
+        def inventory = inventoryRepository.load()
         inventory.fill(new ProductId(1), new ProductQuantity(5))
-        inventoryRepository.load() >> inventory
 
         def items = [
                 1: 10

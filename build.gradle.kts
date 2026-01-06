@@ -22,6 +22,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect") // Kotlin reflection library, required for working with Spring
 
     testImplementation("org.spockframework:spock-core:2.4-groovy-4.0")
+    testImplementation("org.codehaus.groovy:groovy:4.0.16")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+
+    // Byte-buddy for runtime proxy generation (required for spying on concrete classes)
+    testImplementation("net.bytebuddy:byte-buddy:1.14.8")
 }
 
 tasks.test {
