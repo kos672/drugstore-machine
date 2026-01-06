@@ -1,5 +1,6 @@
 package com.kkuzmin.drugstoremachine.interfaces.rest.error
 
+import com.kkuzmin.drugstoremachine.domain.inventory.exception.InsufficientProductAmountAvailableException
 import com.kkuzmin.drugstoremachine.domain.inventory.exception.ProductNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -13,6 +14,13 @@ class ExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException::class)
     fun handleProductNotFoundException(ex: ProductNotFoundException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatusCode.valueOf(HttpStatus.CONFLICT.value()))
+            .body<ErrorResponse>(ErrorResponse(HttpStatus.CONFLICT.value(), ex.message ?: "no error details"))
+    }
+
+    @ExceptionHandler(InsufficientProductAmountAvailableException::class)
+    fun handleInsufficientProductAmountAvailableException(ex: InsufficientProductAmountAvailableException): ResponseEntity<ErrorResponse> {
         return ResponseEntity
             .status(HttpStatusCode.valueOf(HttpStatus.CONFLICT.value()))
             .body<ErrorResponse>(ErrorResponse(HttpStatus.CONFLICT.value(), ex.message ?: "no error details"))
