@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class InventoryController(private val fillInventoryUseCase: FillInventoryUseCase) {
 
-    @PostMapping("/fill")
+    @PostMapping("/inventory")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun fillInventory(@RequestBody request: FillInventoryRequest) = fillInventoryUseCase.execute(request)
 }
